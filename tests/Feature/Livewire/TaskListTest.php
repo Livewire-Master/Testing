@@ -43,4 +43,33 @@ class TaskListTest extends TestCase
                 return count($tasks) === 1;
             });
     }
+
+    public function test_task_is_pending_by_default()
+    {
+        $this->livewire()
+            ->set('title', $this->title)
+            ->set('description', $this->description)
+            ->call('add')
+            ->assertViewHas('tasks', function ($tasks) {
+                return $tasks[0]['is_done'] === false;
+            })
+        ;
+    }
+
+    public function test_task_can_toggle()
+    {
+        $this->livewire()
+            ->set('title', $this->title)
+            ->set('description', $this->description)
+            ->call('add')
+            ->call('toggle', 0)
+            ->assertViewHas('tasks', function ($tasks) {
+                return $tasks[0]['is_done'] === true;
+            })
+            ->call('toggle', 0)
+            ->assertViewHas('tasks', function ($tasks) {
+                return $tasks[0]['is_done'] === false;
+            })
+        ;
+    }
 }
