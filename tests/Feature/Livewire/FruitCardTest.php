@@ -20,6 +20,21 @@ class FruitCardTest extends TestCase
         Livewire::test(FruitCard::class)
             ->assertSee('Cards:')
             ->assertSeeLivewire(Apple::class);
+    }
+
+    public function test_version_is_one()
+    {
+        Livewire::test(FruitCard::class)
+            ->assertViewHas('version', 1)
         ;
+    }
+
+    public function test_fruits_count_is_three()
+    {
+        Livewire::test(FruitCard::class)
+            ->assertViewHas('fruits', function ($fruits)
+            {
+                return count($fruits) === 3;
+            });
     }
 }
