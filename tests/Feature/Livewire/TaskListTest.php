@@ -72,4 +72,38 @@ class TaskListTest extends TestCase
             })
         ;
     }
+
+    public function test_validations_are_ok()
+    {
+        $this->livewire()
+            ->set('title', '')
+            ->set('description', '')
+            ->call('add')
+            ->assertHasErrors(
+                [
+                    'title' => ['required'],
+                    'description' => ['required'],
+                ]
+            )
+            ->set('title', 'a')
+            ->set('description', 'a')
+            ->call('add')
+            ->assertHasErrors(
+                [
+                    'title' => ['min:3'],
+                    'description' => ['min:3'],
+                ]
+            )
+        ;
+    }
+
+    public function test_task_added_event_dispatched()
+    {
+        $this->livewire()
+            ->set('title', $this->title)
+            ->set('description', $this->description)
+            ->call('add')
+            ->assertDispatched('task-added')
+        ;
+    }
 }
